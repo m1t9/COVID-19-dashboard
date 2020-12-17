@@ -1,7 +1,7 @@
 /* eslint-disable import/extensions */
 import createElementWrap from '../utils/wrappers.js';
 // eslint-disable-next-line import/no-cycle
-import moveToPoint from '../index.js';
+import { updateMap, moveToPoint } from '../index.js';
 
 const urls = [
   'https://corona.lmao.ninja/v3/covid-19/all',
@@ -50,9 +50,9 @@ export default function createTable(param) {
     .catch((err) => err.message)))
     .then((data) => {
       // const globalData = data[0];
+      compParam = param;
       const countryData = data[1].sort(comparator);
 
-      compParam = param;
       clearTable();
 
       countryData.forEach((country) => {
@@ -74,12 +74,15 @@ export default function createTable(param) {
 
 document.querySelector('.button1').addEventListener('click', () => {
   createTable('cases');
+  updateMap('cases');
 });
 
 document.querySelector('.button2').addEventListener('click', () => {
   createTable('todayCases');
+  updateMap('todayCases');
 });
 
 document.querySelector('.button3').addEventListener('click', () => {
   createTable('todayDeaths');
+  updateMap('todayDeaths');
 });

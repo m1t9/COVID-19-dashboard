@@ -9,6 +9,8 @@ import countriesGeoData from './data/countriesData.js';
 
 const { L } = window;
 const viewData = {};
+const countriesGeoLayer = L.layerGroup();
+const countriesGeoLayerEmpty = L.layerGroup();
 
 const mapOptions = {
   center: [35, 30],
@@ -22,21 +24,39 @@ const mapOptions = {
       maxZoom: 7,
       minZoom: 3,
     }),
+    countriesGeoLayer,
+    countriesGeoLayerEmpty,
   ],
 };
 
 const myMap = L.map('mapid', mapOptions);
 // const info = L.control();
 
+const overlayMaps = {
+  layer1: countriesGeoLayer,
+};
+
+L.control.layers(overlayMaps).addTo(myMap);
+
 let geoJson;
+let maxValue = 0;
 
 function getColor(countryName, id) {
   const d = viewData[countryName] || viewData[id];
-  if (d > 1000000) return '#ff0000';
-  if (d > 500000) return '#ff8080';
-  if (d > 100000) return '#ffb3b3';
-  if (d > 50000) return '#ffcccc';
-  return '#ffe6e6';
+  if (d > maxValue * 0.9) return '#330000';
+  if (d > maxValue * 0.5) return '#800000';
+  if (d > maxValue * 0.1) return '#ff0000';
+  if (d > maxValue * 0.05) return '#ff1a1a';
+  if (d > maxValue * 0.005) return '#ff3333';
+  if (d > maxValue * 0.001) return '#ff4d4d';
+  if (d > maxValue * 0.005) return '#ff6666';
+  if (d > maxValue * 0.0005) return '#ff8080';
+  if (d > maxValue * 0.0001) return '#ff9999';
+  if (d > maxValue * 0.00005) return '#ffcccc';
+  if (d > maxValue * 0.000001) return '#ffe6e6';
+  // if (d > 0) return '#ff0000';
+
+  return '#ffffff';
 }
 
 function style(feature) {
@@ -45,7 +65,7 @@ function style(feature) {
     opacity: 1,
     color: 'white',
     dashArray: '3',
-    fillOpacity: 0.3,
+    fillOpacity: 0.7,
     fillColor: getColor(feature.properties.name, feature.id),
   };
 }
@@ -66,7 +86,7 @@ function highlightFeature(e) {
 
   // info.update(layer.feature.properties, layer.feature.id);
 
-  layer.bindTooltip(`<div class=""><h3>${layer.feature.properties.name}</h5> <p>Cases: ${viewData[layer.feature.properties.name] || viewData[layer.feature.id]}</p></div>`,
+  layer.bindTooltip(`<div class=""><h3>${layer.feature.properties.name}</h5> <p>Cases: ${viewData[layer.feature.properties.name] || viewData[layer.feature.id] || 'no data'}</p></div>`,
     {
       direction: 'top',
       sticky: true,
@@ -114,7 +134,7 @@ const urls = [
   'https://corona.lmao.ninja/v3/covid-19/all',
   'https://corona.lmao.ninja/v3/covid-19/countries',
 ];
-let popups = {};
+// let popups = {};
 
 function parseJSON(response) {
   return response.json();
@@ -128,61 +148,42 @@ function checkResponse(response) {
   return Promise.reject(new Error(response.statusText));
 }
 
-function markerClick(obj, info) {
-  obj.bindPopup(info).openPopup();
-}
-
 createTable('cases');
 
 function updateMap(localCase) {
-  Promise.all(urls.map((url) => fetch(url)
+  Promise.all(urls.map((url) => fetch(url, { mode: 'cors' })
     .then(checkResponse)
     .then(parseJSON)
     .catch((err) => err.message)))
     .then((data) => {
+      countriesGeoLayer.clearLayers();
       const countryData = data[1];
 
-      popups = {};
+      maxValue = 0;
 
       countryData.forEach((country) => {
-        const { lat, long } = country.countryInfo;
-        const circle = L.circle([lat, long], {
-          color: '#B95FC2',
-          fillColor: '#B95FC2',
-          fillOpacity: 0.7,
-          radius: 100000,
-          className: country.country,
-        });
-        // }).addTo(myMap);
-
-        // const today = (new Date()).toUTCString();
         const key = localCase;
-        viewData[country.country] = country[key];
-        const covidInfo = `<b>${country.country}</b><br><b>${key}: ${country[key]}</b>`;
+        viewData[country.countryInfo.iso3] = country[key];
 
-        popups[country.country] = circle.bindPopup(covidInfo);
-
-        circle.on('mouseover', () => {
-          markerClick(circle, covidInfo);
-        });
-
-        circle.on('mouseout', () => {
-          circle.closePopup();
-        });
+        if (country[key] > maxValue) {
+          maxValue = country[key];
+        }
       });
     })
     .then(() => {
       geoJson = L.geoJson(countriesGeoData.features, {
         style,
         onEachFeature,
-        // style : dafaultGeoJSONStyle, onEachFeature : onEachFeature,
-      }).addTo(myMap);
+      }).addTo(countriesGeoLayer);
     });
 }
 updateMap('cases');
-// updateMap();
 
-export default function moveToPoint(lat, long, country) {
-  myMap.flyTo([lat, long], 4);
-  popups[country].openPopup();
+function moveToPoint(lat, long) {
+  myMap.flyTo([lat, long], 5);
 }
+
+export {
+  updateMap,
+  moveToPoint,
+};
