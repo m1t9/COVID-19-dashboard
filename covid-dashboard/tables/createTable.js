@@ -1,5 +1,6 @@
 /* eslint-disable import/extensions */
 import createElementWrap from '../utils/wrappers.js';
+// eslint-disable-next-line import/no-cycle
 import moveToPoint from '../index.js';
 
 const urls = [
@@ -24,7 +25,8 @@ function clearTable() {
   countryTable.innerHTML = '';
 }
 
-let compParam;
+// init value
+let compParam = 'cases';
 
 export function comparator(a, b) {
   const itemA = a[compParam];
