@@ -2,11 +2,16 @@
 import createElementWrap from '../utils/wrappers.js';
 // eslint-disable-next-line import/no-cycle
 import { updateMap, moveToPoint } from '../index.js';
+import createSSelector from '../utils/selector.js';
 
 const urls = [
   'https://corona.lmao.ninja/v3/covid-19/all',
   'https://corona.lmao.ninja/v3/covid-19/countries',
 ];
+let tableNames;
+let currentTableNum = 0;
+
+const selector = createSSelector();
 
 function parseJSON(response) {
   return response.json();
@@ -54,6 +59,10 @@ export default function createTable(param) {
       const countryData = data[1].sort(comparator);
 
       clearTable();
+      tableNames = Object.keys(data[1][0]).slice(3);
+      // console.log(tableNames);
+      delete tableNames.continent;
+      countryTable.append(param);
 
       countryData.forEach((country) => {
         const item = createElementWrap(
@@ -73,16 +82,37 @@ export default function createTable(param) {
 }
 
 document.querySelector('.button1').addEventListener('click', () => {
-  createTable('cases');
-  updateMap('cases');
+  // createTable('cases');
+  // updateMap('cases');
+  currentTableNum -= 1;
+
+  if (currentTableNum === -1) {
+    currentTableNum = tableNames.length - 1;
+  }
+
+  selector.selectedIndex = currentTableNum;
+  createTable(tableNames[currentTableNum]);
+  updateMap(tableNames[currentTableNum]);
 });
 
 document.querySelector('.button2').addEventListener('click', () => {
-  createTable('todayCases');
-  updateMap('todayCases');
+  currentTableNum += 1;
+
+  if (currentTableNum >= tableNames.length) {
+    currentTableNum = 0;
+  }
+
+  selector.selectedIndex = currentTableNum;
+  createTable(tableNames[currentTableNum]);
+  updateMap(tableNames[currentTableNum]);
 });
 
-document.querySelector('.button3').addEventListener('click', () => {
-  createTable('todayDeaths');
-  updateMap('todayDeaths');
-});
+selector.onchange = () => {
+  createTable(selector.value);
+  updateMap(selector.value);
+};
+
+// document.querySelector('.button3').addEventListener('click', () => {
+//   createTable('todayDeaths');
+//   updateMap('todayDeaths');
+// });

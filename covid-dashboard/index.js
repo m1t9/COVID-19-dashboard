@@ -86,7 +86,7 @@ function highlightFeature(e) {
 
   // info.update(layer.feature.properties, layer.feature.id);
 
-  layer.bindTooltip(`<div class=""><h3>${layer.feature.properties.name}</h5> <p>Cases: ${viewData[layer.feature.properties.name] || viewData[layer.feature.id] || 'no data'}</p></div>`,
+  layer.bindTooltip(`<div class=""><h3>${layer.feature.properties.name}</h5> <p>Data: ${viewData[layer.feature.properties.name] || viewData[layer.feature.id] || 'no data'}</p></div>`,
     {
       direction: 'top',
       sticky: true,
@@ -157,6 +157,7 @@ function updateMap(localCase) {
     .catch((err) => err.message)))
     .then((data) => {
       countriesGeoLayer.clearLayers();
+      // const globalData = data[0];
       const countryData = data[1];
 
       maxValue = 0;
@@ -175,6 +176,7 @@ function updateMap(localCase) {
         style,
         onEachFeature,
       }).addTo(countriesGeoLayer);
+      // myMap.flyTo([35, 30], 2);
     });
 }
 updateMap('cases');
