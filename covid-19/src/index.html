@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COVID-19</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrapper">
+        <div class="title">
+          <h1>COVID-19</h1>
+        </div>
+
+        <div class="global position flex fd-col align-center">
+          <div class="global__title">Global Cases</div>
+          <div class="global__info">72 991 993</div>
+        </div>
+
+        <div class="region position flex fd-col align-center">
+          <div class="region__title">Cases by Country</div>
+          <div class="region__search">
+            <input
+              type="text"
+              class="search"
+              placeholder="Search for a Country"
+            />
+          </div>
+          <div class="region__list opacity">
+            <div class="loader"></div>
+          </div>
+          <div class="region__btn">
+            <div class="region__btn__total region__btn__item region__active">
+              Total
+            </div>
+            <div class="region__btn__deaths region__btn__item">Deaths</div>
+            <div class="region__btn__recovered region__btn__item">
+              Recovered
+            </div>
+          </div>
+        </div>
+
+        <div class="maps position">
+          <div id="mapid"></div>
+        </div>
+
+        <div class="static position flex fd-col align-center">
+          <div class="tbodys">
+            <table class="table">
+                <thead class="table-title">
+                  <tr>
+                    <th>Country</th>
+                    <th>All Static</th>
+                    <th>Deaths</th>
+                    <th>Recovered</th>
+                  </tr>
+                </thead>
+              <tbody class="table__static">
+                  <tr class="loader"></tr>
+              </tbody>
+            </table>
+         </div>
+          <div class="static__btn">
+            <div class="day">
+              <div class="static__btn__all static__btn__item static__active__day">All Period</div>
+              <div class="static__btn__deaths static__btn__item">Last Day</div>
+            </div>
+            <div class="absolute">
+              <div class="static__btn__absolute static__btn__item static__active__absolute">Absolute</div>
+              <div class="static__btn__thousand static__btn__item">One thousand</div>
+            </div>
+          </div>
+        
+        </div>
+
+        <div class="diogramm position flex fd-col align-center">
+          <iframe src="https://datalens.yandex/n4ny8hfcksdaj?_embedded=1&_theme=dark" width="600" height="400" frameborder="0"></iframe>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>
