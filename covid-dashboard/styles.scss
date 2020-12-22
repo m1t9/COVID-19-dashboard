@@ -32,8 +32,10 @@ main {
   display: flex;
   flex-direction: row;
   position: relative;
-  width: 1600px;
+  margin: 6rem auto 0;
+  width: 100%;
   height: 600px; 
+  
 }
 
 .mid_box {
@@ -42,7 +44,7 @@ main {
   position: relative;
   margin: 6rem auto 0;
   width: 90%;
-  height: 500px; 
+  height: 550px; 
   align-items: center;
   justify-content: center;
 }
@@ -255,7 +257,6 @@ input:checked + .slider .train {
   }
 }
 
-
 @media only screen and (max-width : 1200px) {
   .global-table {
     font-size: 18px;
@@ -276,3 +277,5 @@ input:checked + .slider .train {
     padding: 2px;
   }
 }
+
+
