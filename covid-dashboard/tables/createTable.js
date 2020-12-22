@@ -6,6 +6,7 @@ import createSSelector from '../utils/selector.js';
 import updateTime from '../utils/lastUpdate.js';
 import getData from '../utils/getData.js';
 import updateGlobalTable from './globalTable.js';
+import { updateGraph } from '../graph/addGraph.js';
 
 const rangeButton = document.querySelector('#switch_btn_range');
 const perButton = document.querySelector('#switch_btn_per');
@@ -108,7 +109,7 @@ async function createTable(param) {
       const item = createElementWrap(
         'li',
         'table-item',
-        `<span id="table_case">${per ? perValue : country[param]}</span> ${country.country} <img src="${country.countryInfo.flag}" width="20px" height="10px">`,
+        `<img src="${country.countryInfo.flag}" width="20px" height="10px"> <span id="table_case">${per ? perValue : country[param]}</span> ${country.country}`,
         country.country,
       );
 
@@ -121,6 +122,7 @@ async function createTable(param) {
       item.addEventListener('click', () => {
         moveToPoint(country.countryInfo.lat, country.countryInfo.long);
         updateGlobalTable(country.countryInfo.iso3, country.country);
+        updateGraph(country.country);
       });
     }
   });
@@ -185,6 +187,7 @@ searchButton.addEventListener('keyup', () => {
 rangeButton.addEventListener('click', () => {
   searchButton.value = '';
   today = !today;
+  document.querySelector('#switch_btn_range_global').click();
   if (today) {
     currentParam = `today${currentParam.charAt(0).toUpperCase()}${currentParam.slice(1)}`;
     createTable(currentParam);
@@ -199,6 +202,7 @@ rangeButton.addEventListener('click', () => {
 perButton.addEventListener('click', () => {
   searchButton.value = '';
   per = !per;
+  document.querySelector('#switch_btn_per_global').click();
   createTable(currentParam);
   updateMap(currentParam, per);
 });

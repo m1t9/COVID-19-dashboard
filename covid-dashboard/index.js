@@ -6,6 +6,7 @@ import { createTable } from './tables/createTable.js';
 import countriesGeoData from './data/countriesData.js';
 // import countriesGeoData2 from './data/countries.js';
 import updateGlobalTable from './tables/globalTable.js';
+import { updateGraph } from './graph/addGraph.js';
 
 // console.log(countriesData);
 
@@ -79,7 +80,7 @@ function style(feature) {
     opacity: 1,
     color: 'white',
     dashArray: '3',
-    fillOpacity: 0.7,
+    fillOpacity: 0.4,
     // fillColor: getColor(feature.properties.ADMIN, feature.properties.ISO_A3),
     fillColor: getColor(feature.properties.name, feature.id),
   };
@@ -104,7 +105,11 @@ function highlightFeature(e) {
   // layer.bindTooltip(`<div class=""><h3>${layer.feature.properties.ADMIN}</h5>
   //  <p>Data: ${viewData[layer.feature.properties.ADMIN] ||
   //  viewData[layer.feature.properties.ISO_A3] || 'no data'}</p></div>`,
-  layer.bindTooltip(`<div class=""><h3>${layer.feature.properties.name}</h5> <p>Data: ${viewData[layer.feature.properties.name] || viewData[layer.feature.id] || 'no data'}</p></div>`,
+
+  // layer.bindTooltip(`<div class=""><h3>${layer.feature.properties.name}</h5> <p>Data:
+  // ${viewData[layer.feature.properties.name] || viewData[layer.feature.id]
+  //  || 'no data'}</p></div>`,
+  layer.bindTooltip(`<div class=""><h3>${layer.feature.properties.name}</h5> <p>Data: ${viewData[layer.feature.id]}</p></div>`,
     {
       direction: 'top',
       sticky: true,
@@ -129,6 +134,7 @@ function zoomToFeature(e) {
   myMap.fitBounds(e.target.getBounds());
   // updateGlobalTable(e.target.feature.properties.ADMIN);
   updateGlobalTable(e.target.feature.id, e.target.feature.properties.name);
+  updateGraph(e.target.feature.properties.name);
   // moveToPoint(e.latlng.lat, e.latlng.lng);
 }
 
@@ -136,13 +142,14 @@ function zoomToFeatureFixed(e) {
   moveToPoint(e.latlng.lat, e.latlng.lng, 3);
   // updateGlobalTable(e.target.feature.properties.ADMIN);
   updateGlobalTable(e.target.feature.id, e.target.feature.properties.name);
+  updateGraph(e.target.feature.properties.name);
 }
 
 function onEachFeature(feature, layer) {
   // if (layer.feature.properties.ISO_A3 === 'RUS'
   // || layer.feature.properties.ISO_A3 === 'USA') {
   if (layer.feature.id === 'RUS'
-  || layer.feature.id === 'USA') {
+    || layer.feature.id === 'USA') {
     layer.on({
       mouseover: highlightFeature,
       mouseout: resetHighlight,
@@ -202,7 +209,9 @@ function updateMap(localCase, per) {
       });
     })
     .then(() => {
-      geoJson = L.geoJson(countriesGeoData.features.filter((item) => viewData[item.id]), {
+      geoJson = L.geoJson(countriesGeoData.features.filter((item) => viewData[item.id] >= 0), {
+        // console.log(countriesGeoData.features);
+        // geoJson = L.geoJson(countriesGeoData.features, {
         style,
         onEachFeature,
       }).addTo(countriesGeoLayer);

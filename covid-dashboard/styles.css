@@ -15,7 +15,7 @@ body {
       -ms-flex-direction: column;
           flex-direction: column;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  background-color: #222222;
+  background-color: #3a3a3a;
   font-weight: 400;
 }
 
@@ -43,9 +43,8 @@ main {
           flex-direction: row;
   position: relative;
   margin: 6rem auto 0;
-  width: 1400px;
   width: 90%;
-  height: 600px;
+  height: 500px;
 }
 
 :root {
@@ -53,11 +52,10 @@ main {
 }
 
 h1 {
-  font-size: 6rem;
+  font-size: 4rem;
   text-align: center;
   margin-bottom: 2rem;
-  color: #686868;
-  text-shadow: 3px 3px #afafaf;
+  color: white;
 }
 
 #mapid {
@@ -89,7 +87,7 @@ h1 {
   padding-left: 10px;
   width: 90%;
   height: 90%;
-  font-size: 20px;
+  font-size: 15px;
   color: white;
   border: 1px solid white;
   overflow: hidden;
@@ -157,12 +155,10 @@ button {
 .switch_mode {
   position: relative;
   display: inline-block;
-  width: 150px;
-  height: 50px;
+  width: 130px;
+  height: 30px;
   margin-top: 30px;
   margin-left: 20px;
-  -webkit-box-shadow: 6px 4px gray;
-          box-shadow: 6px 4px gray;
 }
 
 .switch_mode input {
@@ -184,8 +180,8 @@ button {
 .slider:before {
   position: absolute;
   content: "";
-  height: 40px;
-  width: 40px;
+  height: 20px;
+  width: 20px;
   left: 5px;
   bottom: 5px;
   background-color: white;
@@ -241,7 +237,7 @@ input:checked + .slider .train {
   margin-left: 20px;
   text-align: center;
   margin-top: 20px;
-  font-size: 20px;
+  font-size: 15px;
   color: white;
   width: 20%;
 }

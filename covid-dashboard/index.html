@@ -14,7 +14,7 @@
     <title>COVID-19 map</title>
 </head>
 <body>
-    <h1>COVID-19 Dashboard</h1>
+    <h1>covid-19 dashboard</h1>
     <main>
         <div class="mid_box">
             <div class="table_box">
@@ -34,7 +34,7 @@
                     <ul class="main__table_country_list"></ul>
                 </div>
     
-                <div class="bottom_box">
+                <div class="left-bottom_box">
                     <label class="switch_mode">
                         <input type="checkbox" id="switch_btn_range">
                         <div class="slider round">
@@ -61,7 +61,33 @@
 
             <div class="global-table">
                 INFO
+                <div class="global-table-data"></div>
+
+                <label class="switch_mode">
+                    <input type="checkbox" id="switch_btn_range_global">
+                    <div class="slider round">
+                        <span class="train">ALL</span>
+                        <span class="play">TODAY</span>
+                    </div>
+                </label>
+    
+                <label class="switch_mode">
+                    <input type="checkbox" id="switch_btn_per_global">
+                    <div class="slider round">
+                        <span class="train">absolute</span>
+                        <span class="play">per 100 000</span>
+                    </div>
+                </label>
+                <button class="reset" type="button">reset</button>
+
+                <div class="chart">
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+                <button class="previous-graph" type="button">previous</button>
+                <button class="next-graph" type="button">next</button>
+                <script src="graph/addGraph.js" defer type="module"></script>
             </div>
+
             <script src="tables/globalTable.js" defer type="module"></script>
         </div>
 
@@ -73,6 +99,8 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
 </body>
 </html>
