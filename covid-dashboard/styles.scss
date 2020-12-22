@@ -32,9 +32,7 @@ main {
   display: flex;
   flex-direction: row;
   position: relative;
-  margin: 6rem auto 0;
-  // width: 1400px;
-  width: 100%;
+  width: 1600px;
   height: 600px; 
 }
 
@@ -43,9 +41,10 @@ main {
   flex-direction: row;
   position: relative;
   margin: 6rem auto 0;
-  // width: 950px;
   width: 90%;
   height: 500px; 
+  align-items: center;
+  justify-content: center;
 }
 
 :root {
@@ -55,16 +54,16 @@ main {
 h1 {
   font-size: 4rem;
   text-align: center;
-  margin-bottom: 2rem;
+  text-transform: uppercase;
   color: rgb(255, 255, 255);
-  // text-shadow: 3px 3px rgb(175, 175, 175);
+  width: 1600px;
 }
 
 #mapid { 
   position: relative;
   left: 1%;
   top: 0;
-  width: 50%;
+  width: 40%;
   height: 100%;
   z-index: 1;
   border-style: solid;
@@ -93,7 +92,6 @@ h1 {
   border: 1px solid white;
   overflow: hidden;
   overflow-y: scroll;
-  
 }
 
 .table-item {
@@ -121,7 +119,7 @@ li:hover {
 }
 
 button {
-  width: 35%;
+  width: 30%;
   padding: 5px;
   cursor: pointer;
 }
@@ -153,17 +151,14 @@ button {
   padding: 5px;
 }
 
-/* ____________ */
-
 .switch_mode {
   position: relative;
   display: inline-block;
-  width: 130px;
+  width: 100px;
   height: 30px;
   margin-top: 30px;
   margin-left: 20px;
-  // box-shadow: 6px 4px gray;
-
+  
   input {
     display:none;
   }
@@ -202,7 +197,7 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(100px);
+  transform: translateX(65px);
 }
 
 .play {
@@ -216,6 +211,7 @@ input:checked + .slider:before {
   transform: translate(-50%,-50%);
   top: 50%;
   left: 65%;
+  font-size: 16px;
 }
 
 input:checked + .slider .play {
@@ -240,9 +236,23 @@ input:checked + .slider .train {
   font-size: 20px;
   color: white;
   width: 20%;
-  height: 26%;
+  height: 100%;
   border: 1px solid #aaaaaa;
   padding: 10px;
+}
+
+.global-table-data {
+  height: 24%;
+  font-size: 18px;
+}
+
+.schedule {
+  
+  .switch_mode {
+    width: 40%;
+    margin-top: 10px;
+    margin-left: 3px;
+  }
 }
 
 

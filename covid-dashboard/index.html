@@ -1,106 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""/>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
 
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css" />
     <script src="./index.js" defer type="module"></script>
     <!-- <script src="./test.js" defer></script> -->
     <title>COVID-19 map</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>covid-19 dashboard</h1>
     <main>
-        <div class="mid_box">
-            <div class="table_box">
-                <div class="button_box">
-                    <button class="button1" type="button">previous</button>
-                    <button class="button2" type="button">next</button>
-                    <!-- <button class="button3" type="button">Today Deaths</button> -->
-                </div>
-    
-                <input
-                    type="text"
-                    class="search"
-                    placeholder="Search for a Country"
-                />
-                <div class="table-name"></div>
-                <div class="main__table">
-                    <ul class="main__table_country_list"></ul>
-                </div>
-    
-                <div class="left-bottom_box">
-                    <label class="switch_mode">
-                        <input type="checkbox" id="switch_btn_range">
-                        <div class="slider round">
-                            <span class="train">ALL</span>
-                            <span class="play">TODAY</span>
-                        </div>
-                    </label>
-        
-                    <label class="switch_mode">
-                        <input type="checkbox" id="switch_btn_per">
-                        <div class="slider round">
-                            <span class="train">absolute</span>
-                            <span class="play">per 100 000</span>
-                        </div>
-                    </label>
+      <div class="mid_box">
+        <div class="table_box">
+          <div class="button_box">
+            <button class="button1" type="button">previous</button>
+            <button class="button2" type="button">next</button>
+            <!-- <button class="button3" type="button">Today Deaths</button> -->
+          </div>
 
-                    <div class="update-time">
-                        Last Updated at (YYYY/MM/DD):
-                    </div>
-                </div>
-            </div>
+          <input
+            type="text"
+            class="search"
+            placeholder="Search for a Country"
+          />
+          <div class="table-name"></div>
+          <div class="main__table">
+            <ul class="main__table_country_list"></ul>
+          </div>
 
-            <div id="mapid"></div>
+          <div class="left-bottom_box">
+            <label class="switch_mode">
+              <input type="checkbox" id="switch_btn_range" />
+              <div class="slider round">
+                <span class="train">All</span>
+                <span class="play">Today</span>
+              </div>
+            </label>
 
-            <div class="global-table">
-                INFO
-                <div class="global-table-data"></div>
+            <label class="switch_mode">
+              <input type="checkbox" id="switch_btn_per" />
+              <div class="slider round">
+                <span class="train">Absolute</span>
+                <span class="play">100th</span>
+              </div>
+            </label>
 
-                <label class="switch_mode">
-                    <input type="checkbox" id="switch_btn_range_global">
-                    <div class="slider round">
-                        <span class="train">ALL</span>
-                        <span class="play">TODAY</span>
-                    </div>
-                </label>
-    
-                <label class="switch_mode">
-                    <input type="checkbox" id="switch_btn_per_global">
-                    <div class="slider round">
-                        <span class="train">absolute</span>
-                        <span class="play">per 100 000</span>
-                    </div>
-                </label>
-                <button class="reset" type="button">reset</button>
-
-                <div class="chart">
-                    <canvas id="myChart" width="400" height="400"></canvas>
-                </div>
-                <button class="previous-graph" type="button">previous</button>
-                <button class="next-graph" type="button">next</button>
-                <script src="graph/addGraph.js" defer type="module"></script>
-            </div>
-
-            <script src="tables/globalTable.js" defer type="module"></script>
+            <div class="update-time">Last Updated at (YYYY/MM/DD):</div>
+          </div>
         </div>
 
-        <div class="lower_box">
+        <div id="mapid"></div>
 
+        <div class="global-table">
+           <div class="global-table_title">INFORMATION</div>
+            <div class="global-table-data"></div>
+
+          <div class="schedule">
+            <label class="switch_mode">
+              <input type="checkbox" id="switch_btn_range_global" />
+              <div class="slider round">
+                <span class="train">All</span>
+                <span class="play">Today</span>
+              </div>
+            </label>
+
+            <label class="switch_mode">
+              <input type="checkbox" id="switch_btn_per_global" />
+              <div class="slider round">
+                <span class="train">Absolute</span>
+                <span class="play">100th</span>
+              </div>
+            </label>
+
+            <div class="chart">
+              <canvas id="myChart" width="400" height="400"></canvas>
+            </div>
+            <button class="previous-graph" type="button">previous</button>
+            <button class="next-graph" type="button">next</button>
+            <button class="reset" type="button">reset</button>
+            <script src="graph/addGraph.js" defer type="module"></script>
+          </div>
         </div>
+
+        <script src="tables/globalTable.js" defer type="module"></script>
+      </div>
+
+      <div class="lower_box"></div>
     </main>
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-
-</body>
+  </body>
 </html>
