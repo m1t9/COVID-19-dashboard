@@ -223,3 +223,40 @@ export {
   updateMap,
   moveToPoint,
 };
+
+
+const tableBox = document.querySelector('.table_box');
+const mapidBox = document.querySelector('#mapid');
+const globalTable = document.querySelector('.global-table');
+
+const maximize = document.querySelectorAll('.maximize');
+
+const maxBtn = document.querySelectorAll('.max');
+
+maxBtn.forEach((el, i) => {
+  el.addEventListener('click', ()=> {
+    switch (i) {
+      case 0: 
+        tableBox.classList.toggle('maximize');
+        mapidBox.classList.toggle('none');
+        globalTable.classList.toggle('none');
+      break;
+      case 1:
+        mapidBox.classList.toggle('maximize');
+        tableBox.classList.toggle('none');
+        globalTable.classList.toggle('none');
+        break;
+      case 2:
+        globalTable.classList.toggle('maximize');
+        tableBox.classList.toggle('none');
+        mapidBox.classList.toggle('none');
+      break;
+    }
+
+     
+  });
+ 
+
+});
+
+
