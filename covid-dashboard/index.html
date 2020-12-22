@@ -16,18 +16,58 @@
 <body>
     <h1>COVID-19 Dashboard</h1>
     <main>
-        <div class="table_box">
-            <div class="button_box">
-                <button class="button1" type="button">previous</button>
-                <button class="button2" type="button">next</button>
-                <!-- <button class="button3" type="button">Today Deaths</button> -->
+        <div class="mid_box">
+            <div class="table_box">
+                <div class="button_box">
+                    <button class="button1" type="button">previous</button>
+                    <button class="button2" type="button">next</button>
+                    <!-- <button class="button3" type="button">Today Deaths</button> -->
+                </div>
+    
+                <input
+                    type="text"
+                    class="search"
+                    placeholder="Search for a Country"
+                />
+                <div class="table-name"></div>
+                <div class="main__table">
+                    <ul class="main__table_country_list"></ul>
+                </div>
+    
+                <div class="bottom_box">
+                    <label class="switch_mode">
+                        <input type="checkbox" id="switch_btn_range">
+                        <div class="slider round">
+                            <span class="train">ALL</span>
+                            <span class="play">TODAY</span>
+                        </div>
+                    </label>
+        
+                    <label class="switch_mode">
+                        <input type="checkbox" id="switch_btn_per">
+                        <div class="slider round">
+                            <span class="train">absolute</span>
+                            <span class="play">per 100 000</span>
+                        </div>
+                    </label>
+
+                    <div class="update-time">
+                        Last Updated at (YYYY/MM/DD):
+                    </div>
+                </div>
             </div>
 
-            <div class="main__table">
-                <ul class="main__table_country_list"></ul>
+            <div id="mapid"></div>
+
+            <div class="global-table">
+                INFO
             </div>
+            <script src="tables/globalTable.js" defer type="module"></script>
         </div>
-        <div id="mapid"></div>
+
+        <div class="lower_box">
+
+        </div>
     </main>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
