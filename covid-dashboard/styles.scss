@@ -5,13 +5,16 @@
 }
 
 ::-webkit-scrollbar {
-  width: 8px; /* ширина для вертикального скролла */
-  height: 8px; /* высота для горизонтального скролла */
+  width: 8px;
+  /* ширина для вертикального скролла */
+  height: 8px;
+  /* высота для горизонтального скролла */
   background-color: #605e66;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color:  #62abff;;
+  background-color: #62abff;
+  ;
   box-shadow: inset 1px 1px 10px #f3faf7;
 }
 
@@ -35,7 +38,7 @@ main {
   position: relative;
   margin: 6rem auto 0;
   width: 100%;
-  height: 600px; 
+  height: 600px;
 }
 
 .mid_box {
@@ -44,7 +47,7 @@ main {
   position: relative;
   margin: 6rem auto 0;
   width: 90%;
-  height: 550px; 
+  height: 550px;
   align-items: center;
   justify-content: center;
 }
@@ -61,7 +64,7 @@ h1 {
   width: 1600px;
 }
 
-#mapid { 
+#mapid {
   position: relative;
   left: 1%;
   top: 0;
@@ -104,7 +107,7 @@ h1 {
 
 #table_case {
   font-weight: 900;
-  color:#707070;
+  color: #707070;
   display: inline-block;
   width: 50%;
 }
@@ -130,8 +133,8 @@ button {
   padding: 6px 8px;
   font: 14px/16px Arial, Helvetica, sans-serif;
   background: white;
-  background: rgba(255,255,255,0.8);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
 
@@ -160,9 +163,9 @@ button {
   height: 30px;
   margin-top: 30px;
   margin-left: 20px;
-  
+
   input {
-    display:none;
+    display: none;
   }
 }
 
@@ -190,15 +193,15 @@ button {
   }
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #707070;
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px #707070;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(65px);
 }
 
@@ -210,18 +213,18 @@ input:checked + .slider:before {
 .play {
   color: white;
   position: absolute;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   top: 50%;
   left: 65%;
   font-size: 16px;
 }
 
-input:checked + .slider .play {
+input:checked+.slider .play {
   display: block;
   left: 35%;
 }
 
-input:checked + .slider .train {
+input:checked+.slider .train {
   display: none;
 }
 
@@ -249,7 +252,7 @@ input:checked + .slider .train {
 }
 
 .schedule {
-  
+
   .switch_mode {
     width: 40%;
     margin-top: 10px;
@@ -263,12 +266,58 @@ input:checked + .slider .train {
     width: 22%;
     margin-left: 16px;
   }
+
   #mapid {
     width: 45%;
   }
+
   .main__table {
     font-size: 16px;
   }
+}
+
+@media only screen and (max-width : 1000px) {
+
+  main {
+    width: 80%;
+    margin: 0rem auto 0;
+  }
+
+  .mid_box {
+    width: 89%;
+    height: 550px;
+  }
+
+  .table_box {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+
+  .global-table {
+    width: 80%;
+    margin-left: 0px;
+    margin-top: -20px;
+  }
+
+  .global-table-data {
+    font-size: 15px;
+  }
+
+  #mapid {
+    width: 100%;
+    height: 100%;
+    padding: 130px;
+    left: 0;
+    top: 98%;
+    margin-bottom: 20px;
+    position: absolute;
+  }
+
+  .myChart {
+    width: 210px;
+    height: 210px;
+  }
+
 }
 
 
@@ -304,7 +353,9 @@ input:checked + .slider .train {
     height: 100%;
     padding: 130px;
     left: 0;
+    top: 0;
     margin-bottom: 20px;
+    position: relative;
   }
 
 }
