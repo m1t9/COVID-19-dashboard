@@ -7,6 +7,7 @@ import countriesGeoData from './data/countriesData.js';
 // import countriesGeoData2 from './data/countries.js';
 import updateGlobalTable from './tables/globalTable.js';
 import { updateGraph } from './graph/addGraph.js';
+import createElementWrap from './utils/wrappers.js';
 
 // console.log(countriesData);
 
@@ -43,6 +44,7 @@ const myMap = L.map('mapid', mapOptions);
 
 let geoJson;
 let maxValue = 0;
+let currentTable;
 
 function getColor(countryName, id) {
   // const d = viewData[countryName] || viewData[id];
@@ -74,6 +76,22 @@ function getColor(countryName, id) {
   return '#ffffff';
 }
 
+function getColorLegend(d) {
+  if (d > maxValue * 0.75) return '#330000';
+  if (d > maxValue * 0.5) return '#800000';
+  if (d > maxValue * 0.4) return '#ff0000';
+  if (d > maxValue * 0.3) return '#ff1a1a';
+  if (d > maxValue * 0.1) return '#ff3333';
+  if (d > maxValue * 0.05) return '#ff4d4d';
+  if (d > maxValue * 0.01) return '#ff6666';
+  if (d > maxValue * 0.005) return '#ff8080';
+  if (d > maxValue * 0.001) return '#ff9999';
+  if (d > maxValue * 0.0005) return '#ffcccc';
+  if (d > maxValue * 0.0001) return '#ffe6e6';
+  // if (d > 0) return '#ff0000';
+  return '#ffffff';
+}
+
 function style(feature) {
   return {
     weight: 2,
@@ -85,6 +103,36 @@ function style(feature) {
     fillColor: getColor(feature.properties.name, feature.id),
   };
 }
+
+const legend = L.control({ position: 'bottomright' });
+
+legend.onAdd = () => {
+  const div = L.DomUtil.create('div', 'info legend');
+  // grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+  const grades = [0,
+    (0.0001 * maxValue).toFixed(0),
+    (0.0005 * maxValue).toFixed(0),
+    (0.001 * +maxValue).toFixed(0),
+    (0.005 * +maxValue).toFixed(0),
+    (0.01 * +maxValue).toFixed(0),
+    (0.05 * +maxValue).toFixed(0),
+    (0.1 * +maxValue).toFixed(0),
+    (0.2 * +maxValue).toFixed(0),
+    (0.3 * +maxValue).toFixed(0),
+    (0.5 * +maxValue).toFixed(0),
+  ];
+  // const labels = [];
+
+  // loop through our density intervals and generate a label with a colored square for each interval
+  div.innerHTML += `<div>${currentTable}</div>`;
+  for (let i = 0; i < grades.length; i += 1) {
+    div.innerHTML
+      += `<i style="background:${getColorLegend(grades[i] + 1)}"></i> ${
+        grades[i]}${grades[i + 1] ? `&ndash;${grades[i + 1]}<br>` : '+'}`;
+  }
+
+  return div;
+};
 
 function highlightFeature(e) {
   const layer = e.target;
@@ -185,6 +233,7 @@ function checkResponse(response) {
 createTable('cases');
 
 function updateMap(localCase, per) {
+  currentTable = localCase;
   Promise.all(urls.map((url) => fetch(url, { mode: 'cors' })
     .then(checkResponse)
     .then(parseJSON)
@@ -215,48 +264,51 @@ function updateMap(localCase, per) {
         style,
         onEachFeature,
       }).addTo(countriesGeoLayer);
+      legend.addTo(myMap);
     });
 }
 updateMap('cases');
+
+const tableBox = document.querySelector('.table_box');
+// const mapidBox = document.querySelector('#mapid');
+
+const mapContainer = document.querySelector('.map_container');
+
+const globalTable = document.querySelector('.global-table');
+
+// const maximize = document.querySelectorAll('.maximize');
+
+// const overlay = document.querySelector('.fullscreen');
+
+const maxBtn = document.querySelectorAll('.max');
+
+maxBtn.forEach((el, i) => {
+  el.addEventListener('click', () => {
+    switch (i) {
+      case 0:
+        tableBox.classList.toggle('fullscreen');
+        mapContainer.classList.toggle('none');
+        mapContainer.classList.toggle('none');
+        break;
+      case 1:
+        mapContainer.classList.toggle('fullscreen');
+        tableBox.classList.toggle('none');
+        globalTable.classList.toggle('none');
+        // updateMap();
+        myMap.invalidateSize();
+        break;
+      case 2:
+        globalTable.classList.toggle('fullscreen');
+        tableBox.classList.toggle('none');
+        mapContainer.classList.toggle('none');
+        break;
+      default:
+        break;
+    }
+  });
+});
 
 export {
   updateMap,
   moveToPoint,
 };
-
-
-const tableBox = document.querySelector('.table_box');
-const mapidBox = document.querySelector('#mapid');
-const globalTable = document.querySelector('.global-table');
-
-const maximize = document.querySelectorAll('.maximize');
-
-const maxBtn = document.querySelectorAll('.max');
-
-maxBtn.forEach((el, i) => {
-  el.addEventListener('click', ()=> {
-    switch (i) {
-      case 0: 
-        tableBox.classList.toggle('maximize');
-        mapidBox.classList.toggle('none');
-        globalTable.classList.toggle('none');
-      break;
-      case 1:
-        mapidBox.classList.toggle('maximize');
-        tableBox.classList.toggle('none');
-        globalTable.classList.toggle('none');
-        break;
-      case 2:
-        globalTable.classList.toggle('maximize');
-        tableBox.classList.toggle('none');
-        mapidBox.classList.toggle('none');
-      break;
-    }
-
-     
-  });
- 
-
-});
-
-
