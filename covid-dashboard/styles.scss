@@ -282,11 +282,15 @@ input:checked+.slider .train {
 }
 
 .schedule {
-
   .switch_mode {
     width: 40%;
     margin-top: 10px;
     margin-left: 3px;
+  }
+
+  .chart {
+    max-height: 300px;
+    max-width: 300px;
   }
 }
 

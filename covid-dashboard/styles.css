@@ -322,6 +322,11 @@ input:checked + .slider .train {
   margin-left: 3px;
 }
 
+.schedule .chart {
+  max-height: 300px;
+  max-width: 300px;
+}
+
 @media only screen and (max-width: 1200px) {
   .global-table {
     font-size: 18px;
