@@ -302,6 +302,38 @@ input:checked+.slider .train {
   }
 }
 
+.footer {
+  position: absolute;
+  bottom: -54px;
+  border: 1px solid #aaaaaa;
+  width: 87.3%;
+  height: 7%;
+  font-size: 16px;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  margin: 7px;
+
+  span {
+    margin-right: 10px;
+  }
+
+  img {
+    width: 60px;
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+}
+
 @media only screen and (max-width : 1200px) {
   .global-table {
     font-size: 18px;
@@ -319,6 +351,10 @@ input:checked+.slider .train {
 
   .switch_mode {
     margin-left: 0;
+  }
+
+  .footer {
+    width: 96.7%;
   }
 }
 
@@ -367,6 +403,11 @@ input:checked+.slider .train {
 
   .switch_mode {
     margin-left: 8px;
+  }
+
+  .footer {
+    bottom: -610px;
+    width: 100%;
   }
 
 }
@@ -419,6 +460,11 @@ input:checked+.slider .train {
     top: 4px;
     margin-bottom: 40px;
   }
+
+  .footer {
+    bottom: -517px;
+    width: 90%;
+  }
 }
 
 .legend {
@@ -464,3 +510,4 @@ input:checked+.slider .train {
 .leaflet-container {
   z-index: 0;
 }
+
