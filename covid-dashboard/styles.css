@@ -1,4 +1,3 @@
-@charset "UTF-8";
 * {
   margin: 0;
   padding: 0;
@@ -17,9 +16,7 @@
 
 ::-webkit-scrollbar {
   width: 8px;
-  /* ширина для вертикального скролла */
   height: 8px;
-  /* высота для горизонтального скролла */
   background-color: #605e66;
 }
 
@@ -407,6 +404,15 @@ input:checked + .slider .train {
     top: 0;
     margin-bottom: 20px;
     position: relative;
+  }
+  .global-table.maximize {
+    margin-top: -800px;
+  }
+  #mapid.maximize {
+    margin-top: -800px;
+  }
+  .table_box.maximize {
+    margin-top: -800px;
   }
 }
 /*# sourceMappingURL=styles.css.map */
