@@ -299,6 +299,7 @@ input:checked+.slider .train {
   .chart {
     max-height: 300px;
     max-width: 300px;
+    margin: 0 auto;
   }
 }
 
@@ -331,6 +332,33 @@ input:checked+.slider .train {
     color: white;
     text-decoration: none;
     margin-right: 10px;
+  }
+}
+
+.global-table.fullscreen {
+
+  .schedule .switch_mode {
+    width: 15%;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(65px);
+    transform: translateX(158px);
+  }
+
+  button {
+    width: 11%;
+  }
+}
+
+.table_box.fullscreen {
+  
+  .button_box {
+    margin-bottom: 10px;
+
+    button {
+      width: 11%;
+    }
   }
 }
 

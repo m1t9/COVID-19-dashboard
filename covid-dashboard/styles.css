@@ -329,6 +329,7 @@ input:checked + .slider .train {
 .schedule .chart {
   max-height: 300px;
   max-width: 300px;
+  margin: 0 auto;
 }
 
 .footer {
@@ -367,6 +368,27 @@ input:checked + .slider .train {
   color: white;
   text-decoration: none;
   margin-right: 10px;
+}
+
+.global-table.fullscreen .schedule .switch_mode {
+  width: 15%;
+}
+
+.global-table.fullscreen input:checked + .slider:before {
+  -webkit-transform: translateX(65px);
+  transform: translateX(158px);
+}
+
+.global-table.fullscreen button {
+  width: 11%;
+}
+
+.table_box.fullscreen .button_box {
+  margin-bottom: 10px;
+}
+
+.table_box.fullscreen .button_box button {
+  width: 11%;
 }
 
 @media only screen and (max-width: 1200px) {
