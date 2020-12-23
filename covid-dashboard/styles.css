@@ -89,7 +89,7 @@ h1 {
   text-align: center;
   text-transform: uppercase;
   color: white;
-  width: 1600px;
+  width: 100%;
 }
 
 #mapid {
@@ -383,9 +383,6 @@ input:checked + .slider .train {
 @media only screen and (max-width: 768px) {
   main {
     margin: 37rem auto 0;
-  }
-  h1 {
-    text-align: inherit;
   }
   main {
     width: 80%;
