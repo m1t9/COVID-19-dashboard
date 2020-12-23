@@ -334,6 +334,9 @@ input:checked + .slider .train {
   .main__table {
     font-size: 16px;
   }
+  .switch_mode {
+    margin-left: 0;
+  }
 }
 
 @media only screen and (max-width: 1000px) {
@@ -348,6 +351,7 @@ input:checked + .slider .train {
   .table_box {
     width: 90%;
     margin-bottom: 20px;
+    margin-right: 20px;
   }
   .global-table {
     width: 80%;
@@ -364,11 +368,15 @@ input:checked + .slider .train {
     left: 0;
     top: 98%;
     margin-bottom: 20px;
+    margin-top: 20px;
     position: absolute;
   }
-  .myChart {
-    width: 210px;
-    height: 210px;
+  .chart {
+    width: 260px;
+    height: 300px;
+  }
+  .switch_mode {
+    margin-left: 8px;
   }
 }
 
@@ -390,11 +398,19 @@ input:checked + .slider .train {
   }
   .table_box {
     width: 90%;
-    margin-bottom: 20px;
+    margin-right: 0;
+    margin-bottom: 0;
   }
   .global-table {
     width: 90%;
     margin-left: 0px;
+  }
+  .global-table-data {
+    height: 17%;
+  }
+  .chart {
+    width: 330px;
+    height: 330px;
   }
   #mapid {
     width: 90%;
@@ -402,7 +418,7 @@ input:checked + .slider .train {
     padding: 130px;
     left: 0;
     top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     position: relative;
   }
   .global-table.maximize {
