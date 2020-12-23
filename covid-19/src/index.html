@@ -3,81 +3,137 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COVID-19</title>
+    
+     <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+      
+    <!-- <script src="./index.js" defer type="module"></script>  -->
+
+
+    <title>COVID-19 map</title>
   </head>
   <body>
-    <div class="container">
-      <div class="wrapper">
-        <div class="title">
-          <h1>COVID-19</h1>
+    <!-- <div class="fullscreen none"></div> -->
+    <h1>covid-19 dashboard</h1>
+    <main>
+      <div class="mid_box">
+        <div class="table_box">
+          <img class="max" src="./max.png" alt="Maximize" />
+          <div class="button_box">
+            <button class="button1" type="button">previous</button>
+            <button class="button2" type="button">next</button>
+            <!-- <button class="button3" type="button">Today Deaths</button> -->
+          </div>
+
+          <input
+            type="text"
+            class="search"
+            placeholder="Search for a Country"
+          />
+          <div class="table-name"></div>
+          <div class="main__table">
+            <ul class="main__table_country_list"></ul>
+          </div>
+
+          <div class="left-bottom_box">
+            <label class="switch_mode">
+              <input type="checkbox" id="switch_btn_range" />
+              <div class="slider round">
+                <span class="train">All</span>
+                <span class="play">Today</span>
+              </div>
+            </label>
+
+            <label class="switch_mode">
+              <input type="checkbox" id="switch_btn_per" />
+              <div class="slider round">
+                <span class="train">Absolute</span>
+                <span class="play">100th</span>
+              </div>
+            </label>
+
+            <div class="update-time">Last Updated at (YYYY/MM/DD):</div>
+          </div>
         </div>
 
-        <div class="global position flex fd-col align-center">
-          <div class="global__title">Global Cases</div>
-          <div class="global__info">72 991 993</div>
-        </div>
+        <div class="map_container">
+          <img class="max" src="./max.png" alt="Maximize" />
 
-        <div class="region position flex fd-col align-center">
-          <div class="region__title">Cases by Country</div>
-          <div class="region__search">
-            <input
-              type="text"
-              class="search"
-              placeholder="Search for a Country"
-            />
-          </div>
-          <div class="region__list opacity">
-            <div class="loader"></div>
-          </div>
-          <div class="region__btn">
-            <div class="region__btn__total region__btn__item region__active">
-              Total
-            </div>
-            <div class="region__btn__deaths region__btn__item">Deaths</div>
-            <div class="region__btn__recovered region__btn__item">
-              Recovered
-            </div>
-          </div>
-        </div>
-
-        <div class="maps position">
           <div id="mapid"></div>
+
+          <!-- <button class="button1" type="button">previous</button>
+          <button class="button2" type="button">next</button> -->
         </div>
 
-        <div class="static position flex fd-col align-center">
-          <div class="tbodys">
-            <table class="table">
-                <thead class="table-title">
-                  <tr>
-                    <th>Country</th>
-                    <th>All Static</th>
-                    <th>Deaths</th>
-                    <th>Recovered</th>
-                  </tr>
-                </thead>
-              <tbody class="table__static">
-                  <tr class="loader"></tr>
-              </tbody>
-            </table>
-         </div>
-          <div class="static__btn">
-            <div class="day">
-              <div class="static__btn__all static__btn__item static__active__day">All Period</div>
-              <div class="static__btn__deaths static__btn__item">Last Day</div>
+        <div class="global-table">
+          <img class="max" src="./max.png" alt="Maximize" />
+          <div class="global-table_title">INFORMATION</div>
+          <div class="global-table-data"></div>
+
+          <div class="schedule">
+            <label class="switch_mode">
+              <input type="checkbox" id="switch_btn_range_global" />
+              <div class="slider round">
+                <span class="train">All</span>
+                <span class="play">Today</span>
+              </div>
+            </label>
+
+            <label class="switch_mode">
+              <input type="checkbox" id="switch_btn_per_global" />
+              <div class="slider round">
+                <span class="train">Absolute</span>
+                <span class="play">100th</span>
+              </div>
+            </label>
+
+            <div class="chart">
+              <canvas id="myChart" width="400" height="400"></canvas>
             </div>
-            <div class="absolute">
-              <div class="static__btn__absolute static__btn__item static__active__absolute">Absolute</div>
-              <div class="static__btn__thousand static__btn__item">One thousand</div>
-            </div>
+            <button class="previous-graph" type="button">previous</button>
+            <button class="next-graph" type="button">next</button>
+            <button class="reset" type="button">reset</button>
+            <script src="graph/addGraph.js" defer type="module"></script>
           </div>
-        
         </div>
 
-        <div class="diogramm position flex fd-col align-center">
-          <iframe src="https://datalens.yandex/n4ny8hfcksdaj?_embedded=1&_theme=dark" width="600" height="400" frameborder="0"></iframe>
+        <div class="footer">
+          <div class="footer-container">
+            <span class="copyright">English for Kids © 2020</span>
+            <a class="logo_href" href="https://github.com/m1t9" target="_blank">
+              m1t9
+            </a>
+            <a
+              class="logo_href"
+              href="https://github.com/Domask2"
+              target="_blank"
+            >
+              domask2
+            </a>
+            <a class="logo_href" href="https://rs.school/js/" target="_blank"
+              ><img
+                src="https://rs.school/images/rs_school_js.svg"
+                alt="Rolling Scopes School"
+            /></a>
+          </div>
         </div>
 
+        <script src="tables/globalTable.js" defer type="module"></script>
       </div>
-    </div>
+
+      <div class="lower_box"></div>
+    </main>
+
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   </body>
 </html>

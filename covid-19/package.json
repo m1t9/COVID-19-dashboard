@@ -50,6 +50,7 @@
   "dependencies": {
     "core-js": "^3.8.0",
     "imagemin-pngquant": "^5.1.0",
+    "leaflet": "^1.7.1",
     "normalize.css": "^8.0.1",
     "pngquant-bin": "^3.1.1",
     "regenerator-runtime": "^0.13.7"
