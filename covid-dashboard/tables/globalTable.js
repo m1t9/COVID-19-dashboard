@@ -19,39 +19,20 @@ let currentIso = 'GLOBAL';
 let currentCountryName = 'GLOBAL';
 
 async function addParams(data, name) {
-  // console.log('wow');
-  // const globalCases = (await data);
-  // console.log(await data);
-  // globalTable.append(createElementWrap(
-  //   'div',
-  //   'global-item',
-  //   `Total cases: ${(await data).cases}`,
-  // ));
-
-  // globalTable.append(createElementWrap(
-  //   'div',
-  //   'global-item',
-  //   `Total deaths: ${(await data).deaths}`,
-  // ));
-
-  // globalTable.append(createElementWrap(
-  //   'div',
-  //   'global-item',
-  //   `Total deaths: ${(await data).recovered}`,
-  // ));
   if (per) {
     const cases = (((await data)[today ? 'todayCases' : 'cases'] * 100000) / (await data).population).toFixed(0);
     const deaths = (((await data)[today ? 'todayDeaths' : 'deaths'] * 100000) / (await data).population).toFixed(0);
     const recovered = (((await data)[today ? 'todayRecovered' : 'recovered'] * 100000) / (await data).population).toFixed(0);
-    globalTable.innerHTML += `<br>${name}`;
-    globalTable.innerHTML += `<br>${today ? 'Today' : 'Total'} cases: ${cases}<br>`;
-    globalTable.innerHTML += `${today ? 'Today' : 'Total'} deaths: ${deaths}<br>`;
-    globalTable.innerHTML += `${today ? 'Today' : 'Total'} recovered: ${recovered}<br`;
+
+    globalTable.innerHTML += `<div><b>${name}</div>`;
+    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} cases: ${cases}</div>`;
+    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} deaths: ${deaths}</div>`;
+    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} recovered: ${recovered}</div>`;
   } else {
-    globalTable.innerHTML += `<br>${name}`;
-    globalTable.innerHTML += `<br>${today ? 'Today' : 'Total'} cases: ${(await data)[today ? 'todayCases' : 'cases']}<br>`;
-    globalTable.innerHTML += `${today ? 'Today' : 'Total'} deaths: ${(await data)[today ? 'todayDeaths' : 'deaths']}<br>`;
-    globalTable.innerHTML += `${today ? 'Today' : 'Total'} recovered: ${(await data)[today ? 'todayRecovered' : 'recovered']}<br`;
+    globalTable.innerHTML += `<div><b>${name}</div>`;
+    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} cases: ${(await data)[today ? 'todayCases' : 'cases']}</div>`;
+    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} deaths: ${(await data)[today ? 'todayDeaths' : 'deaths']}</div>`;
+    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} recovered: ${(await data)[today ? 'todayRecovered' : 'recovered']}</div>`;
   }
 }
 
@@ -62,18 +43,17 @@ export default async function updateGlobalTable(iso, countryName) {
   currentCountryName = countryName;
   const countryData = getData(`https://disease.sh/v3/covid-19/countries/${iso}?strict=true`);
   if (await countryData) {
-    // globalTable.innerHTML = 'INFO';
     globalTable.innerHTML = '';
-    addParams((await countryData), `<b>${countryName}`);
+    addParams((await countryData), `<div><b>${countryName}</div>`);
   } else {
-    globalTable.innerHTML = 'NO DATA';
+    globalTable.innerHTML = '<div>NO DATA</div>';
   }
 }
 
 function updateWrap() {
   if (currentIso === 'GLOBAL') {
     globalTable.innerHTML = '';
-    addParams(globalData, 'GLOBAL');
+    addParams(globalData, '<div>GLOBAL</div>');
   } else {
     updateGlobalTable(currentIso, currentCountryName);
   }
@@ -96,6 +76,6 @@ reset.addEventListener('click', () => {
   currentIso = 'GLOBAL';
   currentCountryName = 'GLOBAL';
   globalTable.innerHTML = '';
-  addParams(globalData, 'GLOBAL');
+  addParams(globalData, '<div>GLOBAL</div>');
   resetToGlobal();
 });

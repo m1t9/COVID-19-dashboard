@@ -2,7 +2,6 @@
 import createElementWrap from '../utils/wrappers.js';
 // eslint-disable-next-line import/no-cycle
 import { updateMap, moveToPoint } from '../index.js';
-import createSSelector from '../utils/selector.js';
 import updateTime from '../utils/lastUpdate.js';
 import getData from '../utils/getData.js';
 import updateGlobalTable from './globalTable.js';
@@ -15,35 +14,23 @@ const urls = [
   'https://corona.lmao.ninja/v3/covid-19/all',
   'https://corona.lmao.ninja/v3/covid-19/countries',
 ];
-// let tableNames;
 const tableNames = ['cases', 'deaths', 'recovered'];
+const countryTable = document.querySelector('.main__table_country_list');
+const data = getData(urls[1]);
+const globalData = getData(urls[0]);
+
 let currentTableNum = 0;
 let mainTable = [];
 let today = false;
 let per = false;
 
-const selector = createSSelector();
-
-// function parseJSON(response) {
-//   return response.json();
-// }
-
-// function checkResponse(response) {
-//   if (response.status === 200) {
-//     return Promise.resolve(response);
-//   }
-//   return Promise.reject(new Error(response.statusText));
-// }
-
-const countryTable = document.querySelector('.main__table_country_list');
+// init value
+let currentParam = 'cases';
 
 function clearTable() {
   countryTable.innerHTML = '';
   mainTable = [];
 }
-
-// init value
-let currentParam = 'cases';
 
 export function comparator(a, b) {
   const itemA = a[currentParam];
@@ -67,34 +54,7 @@ function uppendTable(table) {
   });
 }
 
-// async function getData(num) {
-//   const rez = await fetch(urls[num])
-//     .then(checkResponse)
-//     .then(parseJSON)
-//     .catch((err) => err.message);
-
-//   return rez;
-// }
-
-// const data = getData(1);
-// const globalData = getData(0);
-const data = getData(urls[1]);
-const globalData = getData(urls[0]);
-
-// (async () => {
-//   data = await getData();
-//   console.log(data);
-// })();
-// getData().then((result) => { data = result; });
-
 async function createTable(param) {
-  // Promise.all(urls.map((url) => fetch(url)
-  //   .then(checkResponse)
-  //   .then(parseJSON)
-  //   .catch((err) => err.message)))
-  //   .then((data) => {
-  //   });
-  // const globalData = data[0];
   currentParam = param;
   const countryData = (await data).sort(comparator);
 
@@ -126,6 +86,7 @@ async function createTable(param) {
       });
     }
   });
+
   if (per) {
     mainTable.sort((a, b) => {
       const f = +a.value;
@@ -156,9 +117,8 @@ document.querySelector('.button1').addEventListener('click', () => {
     currentParam = tableNames[currentTableNum];
   }
 
-  selector.selectedIndex = currentTableNum;
   createTable(currentParam);
-  updateMap(currentParam);
+  updateMap(currentParam, per);
 });
 
 document.querySelector('.button2').addEventListener('click', () => {
@@ -175,9 +135,8 @@ document.querySelector('.button2').addEventListener('click', () => {
     currentParam = tableNames[currentTableNum];
   }
 
-  selector.selectedIndex = currentTableNum;
   createTable(currentParam);
-  updateMap(currentParam);
+  updateMap(currentParam, per);
 });
 
 searchButton.addEventListener('keyup', () => {
@@ -188,14 +147,16 @@ rangeButton.addEventListener('click', () => {
   searchButton.value = '';
   today = !today;
   document.querySelector('#switch_btn_range_global').click();
+  document.querySelector('#switch_btn_range_map').click();
+
   if (today) {
     currentParam = `today${currentParam.charAt(0).toUpperCase()}${currentParam.slice(1)}`;
     createTable(currentParam);
-    updateMap(currentParam);
+    updateMap(currentParam, per);
   } else {
     currentParam = currentParam.slice(5).toLowerCase();
     createTable(currentParam);
-    updateMap(currentParam);
+    updateMap(currentParam, per);
   }
 });
 
@@ -203,6 +164,7 @@ perButton.addEventListener('click', () => {
   searchButton.value = '';
   per = !per;
   document.querySelector('#switch_btn_per_global').click();
+  document.querySelector('#switch_btn_per_map').click();
   createTable(currentParam);
   updateMap(currentParam, per);
 });

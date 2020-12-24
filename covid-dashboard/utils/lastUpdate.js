@@ -9,5 +9,5 @@ export default function updateTime(time) {
     (`0${localTime.getUTCMinutes()}`).slice(-2)}:${
     (`0${localTime.getUTCSeconds()}`).slice(-2)}`;
 
-  lastUpdateBlock.innerHTML = `Last Updated at (YYYY/MM/DD): <br>${timeFormat}`;
+  lastUpdateBlock.innerHTML = `<b>Last Updated</b> at (YYYY/MM/DD): <br>${timeFormat}`;
 }
