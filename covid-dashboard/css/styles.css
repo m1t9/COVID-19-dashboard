@@ -11,6 +11,9 @@ body {
   background-color: #aaaaaa;
   font-weight: 400;
   overflow-x: hidden;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -715,11 +718,21 @@ input:checked + .slider .mode_on {
 }
 
 .footer_logo {
+  margin-left: 2rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.footer_logo > a {
+  display: inline-block;
   width: 5rem;
   height: 4rem;
+}
+
+.footer_logo > a img {
+  width: 100%;
+  height: 100%;
 }
 
 .github {
