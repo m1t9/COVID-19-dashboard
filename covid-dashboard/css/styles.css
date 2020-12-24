@@ -180,8 +180,12 @@ li:hover {
   border-radius: 10px;
 }
 
+.btn:focus {
+  outline: none;
+}
+
 .reset {
-  background-color: #c58a8a;
+  background-color: #f59e9e;
 }
 
 .info {

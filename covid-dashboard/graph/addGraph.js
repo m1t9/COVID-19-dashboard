@@ -1,5 +1,4 @@
-/* eslint-disable import/extensions */
-import getData from '../utils/getData.js';
+import getData from '../utils/getData';
 
 const { Chart } = window;
 const globalUrl = 'https://disease.sh/v3/covid-19/historical/all?lastdays=30';

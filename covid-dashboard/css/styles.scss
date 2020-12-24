@@ -147,10 +147,14 @@ li:hover {
   padding: 5px;
   cursor: pointer;
   border-radius: 10px;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .reset {
-  background-color: rgb(197, 138, 138);
+  background-color: rgb(245, 158, 158);
 }
 
 .info {

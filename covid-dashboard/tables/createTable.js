@@ -1,11 +1,10 @@
-/* eslint-disable import/extensions */
-import createElementWrap from '../utils/wrappers.js';
+import createElementWrap from '../utils/wrappers';
 // eslint-disable-next-line import/no-cycle
-import { updateMap, moveToPoint } from '../index.js';
-import updateTime from '../utils/lastUpdate.js';
-import getData from '../utils/getData.js';
-import updateGlobalTable from './globalTable.js';
-import { updateGraph } from '../graph/addGraph.js';
+import { updateMap, moveToPoint } from '../index';
+import updateTime from '../utils/lastUpdate';
+import getData from '../utils/getData';
+import updateGlobalTable from './globalTable';
+import { updateGraph } from '../graph/addGraph';
 
 const rangeButton = document.querySelector('#switch_btn_range');
 const perButton = document.querySelector('#switch_btn_per');

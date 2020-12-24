@@ -1,7 +1,5 @@
-/* eslint-disable import/extensions */
-// import createElementWrap from '../utils/wrappers.js';
-import getData from '../utils/getData.js';
-import { resetToGlobal } from '../graph/addGraph.js';
+import getData from '../utils/getData';
+import { resetToGlobal } from '../graph/addGraph';
 
 const urls = [
   'https://corona.lmao.ninja/v3/covid-19/all',

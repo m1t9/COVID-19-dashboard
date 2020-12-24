@@ -1,10 +1,10 @@
-/* eslint-disable import/extensions */
 // import createElementWrap from './utils/wrappers.js';
 // eslint-disable-next-line import/no-cycle
-import { createTable } from './tables/createTable.js';
-import countriesGeoData from './data/countriesData.js';
-import updateGlobalTable from './tables/globalTable.js';
-import { updateGraph } from './graph/addGraph.js';
+import { createTable } from './tables/createTable';
+import countriesGeoData from './data/countriesData';
+import updateGlobalTable from './tables/globalTable';
+import { updateGraph } from './graph/addGraph';
+import './css/styles.scss';
 
 const { L } = window;
 const viewData = {};
