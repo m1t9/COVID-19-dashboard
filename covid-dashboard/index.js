@@ -1,29 +1,44 @@
-// import createElementWrap from './utils/wrappers.js';
 // eslint-disable-next-line import/no-cycle
 import { createTable } from './tables/createTable';
 import countriesGeoData from './data/countriesData';
 import updateGlobalTable from './tables/globalTable';
 import { updateGraph } from './graph/addGraph';
+import CONSTANTS from './data/CONSTANTS';
+import getData from './utils/getData';
+import { URLS } from './data/URLS';
+import fullScreen from './utils/fullScreen';
+import {
+  getMapAttr,
+  getLegendTitle,
+  getLegendItemRange,
+  getTip,
+} from './templates/templates';
+import { getColor, getGradesArr } from './utils/colors';
+import {
+  prevMapButton,
+  nextMapButton,
+  mapRangeButton,
+  mapPerButton,
+  nextListButton,
+  prevListButton,
+  listRangeButton,
+  listPerButton,
+} from './utils/buttons';
 import './css/styles.scss';
 
+const countryData = getData(URLS.COUNTRIES);
 const { L } = window;
 const viewData = {};
 const countriesGeoLayer = L.layerGroup();
 const countriesGeoLayerEmpty = L.layerGroup();
-const urls = [
-  'https://corona.lmao.ninja/v3/covid-19/all',
-  'https://corona.lmao.ninja/v3/covid-19/countries',
-];
 
 const mapOptions = {
   center: [35, 30],
   maxBounds: [[-90, -180], [90, 180]],
   zoom: 2,
   layers: [
-    new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      // new L.TileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-      //   attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+    new L.TileLayer(URLS.LIGHT_THEME_LAY, {
+      attribution: getMapAttr(URLS.LIGHT_THEME_ATTR),
       maxZoom: 7,
       minZoom: 3,
     }),
@@ -32,43 +47,16 @@ const mapOptions = {
   ],
 };
 
-const myMap = L.map('mapid', mapOptions);
+const myMap = L.map(CONSTANTS.MAPID, mapOptions);
 const legend = L.control({ position: 'bottomright' });
-const tableBox = document.querySelector('.table_box');
-const mapContainer = document.querySelector('.map_container');
-const globalTable = document.querySelector('.global-table');
-const maxBtn = document.querySelectorAll('.max');
+const tableBox = document.querySelector(`.${CONSTANTS.TABLE_BOX}`);
+const mapContainer = document.querySelector(`.${CONSTANTS.MAP_CONTAINER}`);
+const globalTable = document.querySelector(`.${CONSTANTS.GLOBAL_TABLE}`);
+const maxBtn = document.querySelectorAll(`.${CONSTANTS.MAXIMIZE_BTN}`);
 
 let geoJson;
 let maxValue = 0;
 let currentTable;
-
-function getColor(countryName, id) {
-  const d = viewData[id];
-  if (d > maxValue * 0.9) return '#330000';
-  if (d > maxValue * 0.8) return '#b30000';
-  if (d > maxValue * 0.7) return '#ff0000';
-  if (d > maxValue * 0.6) return '#ff1a1a';
-  if (d > maxValue * 0.5) return '#ff3333';
-  if (d > maxValue * 0.4) return '#ff4d4d';
-  if (d > maxValue * 0.3) return '#ff6666';
-  if (d > maxValue * 0.1) return '#ff8080';
-  if (d > maxValue * 0.05) return '#ff9999';
-  if (d > maxValue * 0.01) return '#ffcccc';
-  if (d > maxValue * 0.005) return '#ffe6e6';
-
-  return '#ffffff';
-}
-
-function getColorLegend(d) {
-  if (d > maxValue * 0.9) return '#800000';
-  if (d > maxValue * 0.5) return '#ff3333';
-  if (d > maxValue * 0.3) return '#ff6666';
-  if (d > maxValue * 0.1) return '#ff9999';
-  if (d > maxValue * 0.01) return '#ffe6e6';
-
-  return '#ffffff';
-}
 
 function style(feature) {
   return {
@@ -77,25 +65,19 @@ function style(feature) {
     color: 'white',
     dashArray: '3',
     fillOpacity: 0.4,
-    fillColor: getColor(feature.properties.name, feature.id),
+    fillColor: getColor(feature.id, maxValue, viewData),
   };
 }
 
 legend.onAdd = () => {
-  const div = L.DomUtil.create('div', 'info legend');
-  const grades = [0,
-    (0.01 * maxValue).toFixed(0),
-    (0.05 * +maxValue).toFixed(0),
-    (0.1 * +maxValue).toFixed(0),
-    (0.3 * +maxValue).toFixed(0),
-    (0.5 * +maxValue).toFixed(0),
-    (0.9 * +maxValue).toFixed(0),
-  ];
+  const div = L.DomUtil.create(CONSTANTS.DIV, 'info legend');
+  const grades = getGradesArr(maxValue);
 
-  div.innerHTML += `<div style="text-align: center"><b>${currentTable.toUpperCase()}</div>`;
+  div.innerHTML += getLegendTitle(currentTable);
+
   for (let i = 0; i < grades.length; i += 1) {
     div.innerHTML
-      += `<i style="background:${getColorLegend(grades[i] + 1)}"></i> ${grades[i]}${grades[i + 1] ? `&ndash;${grades[i + 1]}<br>` : '+'}`;
+      += getLegendItemRange(grades[i], grades[i + 1], maxValue);
   }
 
   return div;
@@ -115,7 +97,7 @@ function highlightFeature(e) {
     layer.bringToFront();
   }
 
-  layer.bindTooltip(`<div class=""><h3>${layer.feature.properties.name}</h5> <p>Data: ${viewData[layer.feature.id]}</p></div>`,
+  layer.bindTooltip(getTip(layer.feature.properties.name, viewData[layer.feature.id]),
     {
       direction: 'top',
       sticky: true,
@@ -148,8 +130,9 @@ function zoomToFeatureFixed(e) {
 }
 
 function onEachFeature(feature, layer) {
-  if (layer.feature.id === 'RUS'
-    || layer.feature.id === 'USA') {
+  const countryCheck = layer.feature.id === CONSTANTS.RUS || layer.feature.id === CONSTANTS.USA;
+
+  if (countryCheck) {
     layer.on({
       mouseover: highlightFeature,
       mouseout: resetHighlight,
@@ -164,77 +147,49 @@ function onEachFeature(feature, layer) {
   }
 }
 
-function parseJSON(response) {
-  return response.json();
-}
-
-function checkResponse(response) {
-  if (response.status === 200) {
-    return Promise.resolve(response);
-  }
-
-  return Promise.reject(new Error(response.statusText));
-}
-
-createTable('cases');
-
-function updateMap(localCase, per) {
+async function updateMap(localCase, per) {
   currentTable = localCase;
-  Promise.all(urls.map((url) => fetch(url, { mode: 'cors' })
-    .then(checkResponse)
-    .then(parseJSON)
-    .catch((err) => err.message)))
-    .then((data) => {
-      countriesGeoLayer.clearLayers();
-      const countryData = data[1];
+  countriesGeoLayer.clearLayers();
 
-      maxValue = 0;
+  maxValue = 0;
 
-      countryData.forEach((country) => {
-        const key = localCase;
+  (await countryData).forEach((country) => {
+    const key = localCase;
 
-        if (per) {
-          viewData[country.countryInfo.iso3] = country.population
-            ? ((country[key] * 100000) / country.population).toFixed(0) : 0;
-        } else {
-          viewData[country.countryInfo.iso3] = country[key];
-        }
+    if (per) {
+      viewData[country.countryInfo.iso3] = country.population
+        ? ((country[key] * CONSTANTS.PER_100k) / country.population).toFixed(0) : 0;
+    } else {
+      viewData[country.countryInfo.iso3] = country[key];
+    }
 
-        if (+viewData[country.countryInfo.iso3] > maxValue) {
-          maxValue = +viewData[country.countryInfo.iso3];
-        }
-      });
-    })
-    .then(() => {
-      geoJson = L.geoJson(countriesGeoData.features.filter((item) => viewData[item.id] >= 0), {
-        style,
-        onEachFeature,
-      }).addTo(countriesGeoLayer);
-      legend.addTo(myMap);
-    });
+    if (+viewData[country.countryInfo.iso3] > maxValue) {
+      maxValue = +viewData[country.countryInfo.iso3];
+    }
+  });
+  geoJson = L.geoJson(countriesGeoData.features.filter((item) => viewData[item.id] >= 0), {
+    style,
+    onEachFeature,
+  }).addTo(countriesGeoLayer);
+  legend.addTo(myMap);
 }
-updateMap('cases');
+
+// init
+createTable(CONSTANTS.CASES);
+updateMap(CONSTANTS.CASES);
 
 maxBtn.forEach((el, i) => {
   el.addEventListener('click', () => {
     switch (i) {
       case 0:
-        tableBox.classList.toggle('fullscreen');
-        mapContainer.classList.toggle('none');
-        mapContainer.classList.toggle('none');
+        fullScreen(tableBox, mapContainer, globalTable);
         break;
       case 1:
-        mapContainer.classList.toggle('fullscreen');
-        tableBox.classList.toggle('none');
-        globalTable.classList.toggle('none');
-        // updateMap();
+        fullScreen(mapContainer, tableBox, globalTable);
         myMap.invalidateSize();
         break;
       case 2:
-        // resize();
-        globalTable.classList.toggle('fullscreen');
-        tableBox.classList.toggle('none');
-        mapContainer.classList.toggle('none');
+        fullScreen(globalTable, tableBox, mapContainer);
         break;
       default:
         break;
@@ -242,20 +197,20 @@ maxBtn.forEach((el, i) => {
   });
 });
 
-document.querySelector('#prev_map').addEventListener('click', () => {
-  document.querySelector('.button1').click();
+prevMapButton.addEventListener('click', () => {
+  nextListButton.click();
 });
 
-document.querySelector('#next_map').addEventListener('click', () => {
-  document.querySelector('.button2').click();
+nextMapButton.addEventListener('click', () => {
+  prevListButton.click();
 });
 
-document.querySelector('#switch_btn_range_map').addEventListener('click', () => {
-  document.querySelector('#switch_btn_range').click();
+mapRangeButton.addEventListener('click', () => {
+  listRangeButton.click();
 });
 
-document.querySelector('#switch_btn_per_map').addEventListener('click', () => {
-  document.querySelector('#switch_btn_per').click();
+mapPerButton.addEventListener('click', () => {
+  listPerButton.click();
 });
 
 export {

@@ -1,4 +1,6 @@
-const lastUpdateBlock = document.querySelector('.update-time');
+import CONSTANTS from '../data/CONSTANTS';
+
+const lastUpdateBlock = document.querySelector(`.${CONSTANTS.UPDATE_TIME}`);
 
 export default function updateTime(time) {
   const localTime = new Date(time);

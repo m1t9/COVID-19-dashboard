@@ -1,19 +1,20 @@
 import getData from '../utils/getData';
+import { URLS, getGraphCountryUrl } from '../data/URLS';
+import CONSTANTS from '../data/CONSTANTS';
+import { previousGraph, nextGraph } from '../utils/buttons';
 
 const { Chart } = window;
-const globalUrl = 'https://disease.sh/v3/covid-19/historical/all?lastdays=30';
-const previousGraph = document.querySelector('.previous-graph');
-const nextGraph = document.querySelector('.next-graph');
+const globalUrl = URLS.GRAPH_DATA;
 const graphNames = ['cases', 'deaths', 'recovered'];
 const graphColors = ['red', 'yellow', 'green'];
 
 let data = getData(globalUrl);
 let currentPos = 0;
-let currentGraphName = 'GLOBAL';
+let currentGraphName = CONSTANTS.GLOBAL;
 let myChart;
 
 async function createGraph(value, name) {
-  const ctx = document.getElementById('myChart').getContext('2d');
+  const ctx = document.getElementById(CONSTANTS.CHART).getContext('2d');
 
   myChart = new Chart(ctx, {
     type: 'bar',
@@ -54,7 +55,7 @@ async function createGraph(value, name) {
 }
 
 async function updateGraph(iso) {
-  data = (await getData(`https://disease.sh/v3/covid-19/historical/${iso}?lastdays=30`)).timeline;
+  data = (await getData(getGraphCountryUrl(iso))).timeline;
 
   myChart.destroy();
   currentGraphName = iso;
@@ -62,14 +63,14 @@ async function updateGraph(iso) {
 }
 
 async function resetToGlobal() {
-  data = (await getData('https://disease.sh/v3/covid-19/historical/all?lastdays=30'));
+  data = (await getData(URLS.GRAPH_DATA));
 
   myChart.destroy();
-  currentGraphName = 'GLOBAL';
+  currentGraphName = CONSTANTS.GLOBAL;
   createGraph(graphNames[currentPos], currentGraphName);
 }
 
-createGraph('cases', currentGraphName);
+createGraph(CONSTANTS.CASES, currentGraphName);
 
 nextGraph.addEventListener('click', () => {
   currentPos += 1;

@@ -5,26 +5,36 @@ import updateTime from '../utils/lastUpdate';
 import getData from '../utils/getData';
 import updateGlobalTable from './globalTable';
 import { updateGraph } from '../graph/addGraph';
+import CONSTANTS from '../data/CONSTANTS';
+import { URLS } from '../data/URLS';
+import { getListItem, todayListTitle } from '../templates/templates';
+import {
+  listRangeButton,
+  listPerButton,
+  searchButton,
+  prevListButton,
+  nextListButton,
+  globalRange,
+  mapRange,
+  perGlobal,
+  perMap,
+} from '../utils/buttons';
 
-const rangeButton = document.querySelector('#switch_btn_range');
-const perButton = document.querySelector('#switch_btn_per');
-const searchButton = document.querySelector('.search');
-const urls = [
-  'https://corona.lmao.ninja/v3/covid-19/all',
-  'https://corona.lmao.ninja/v3/covid-19/countries',
-];
+const urls = [URLS.ALL, URLS.COUNTRIES];
 const tableNames = ['cases', 'deaths', 'recovered'];
-const countryTable = document.querySelector('.main__table_country_list');
+const tableName = document.querySelector(`.${CONSTANTS.LIST_NAME}`);
+const countryTable = document.querySelector(`.${CONSTANTS.TABLE_LIST}`);
 const data = getData(urls[1]);
 const globalData = getData(urls[0]);
 
 let currentTableNum = 0;
+let currentTableName;
 let mainTable = [];
 let today = false;
 let per = false;
 
 // init value
-let currentParam = 'cases';
+let currentParam = CONSTANTS.CASES;
 
 function clearTable() {
   countryTable.innerHTML = '';
@@ -59,21 +69,25 @@ async function createTable(param) {
 
   clearTable();
 
-  document.querySelector('.table-name').innerHTML = '';
-  document.querySelector('.table-name').append(param);
+  tableName.innerHTML = '';
+  tableName.append(param);
 
   countryData.forEach((country) => {
     if (!per || (per && country.population !== 0)) {
-      const perValue = ((country[param] * 100000) / country.population).toFixed(0);
+      const perValue = ((country[param] * CONSTANTS.PER_100k) / country.population).toFixed(0);
       const item = createElementWrap(
         'li',
-        'table-item',
-        `<img src="${country.countryInfo.flag}" width="20px" height="10px"> <span id="table_case">${per ? perValue : country[param]}</span> ${country.country}`,
+        CONSTANTS.LIST_ITEM,
+        getListItem(country.countryInfo.flag,
+          per
+            ? perValue
+            : country[param],
+          country.country),
         country.country,
       );
 
       if (per) {
-        item.setAttribute('value', per ? perValue : country[param]);
+        item.setAttribute(CONSTANTS.VALUE, per ? perValue : country[param]);
       }
 
       mainTable.push(item);
@@ -99,10 +113,24 @@ async function createTable(param) {
 }
 
 function search(input) {
-  uppendTable(mainTable.filter((item) => item.getAttribute('data-table-item').toLowerCase().includes(input)));
+  uppendTable(mainTable.filter((item) => item.getAttribute(CONSTANTS.LIST_DATA_ITEM)
+    .toLowerCase().includes(input)));
 }
 
-document.querySelector('.button1').addEventListener('click', () => {
+function changeTitle() {
+  currentTableName = tableNames[currentTableNum];
+
+  if (today) {
+    todayListTitle(currentTableName);
+  } else {
+    currentParam = currentTableName;
+  }
+
+  createTable(currentParam);
+  updateMap(currentParam, per);
+}
+
+prevListButton.addEventListener('click', () => {
   searchButton.value = '';
   currentTableNum -= 1;
 
@@ -110,17 +138,10 @@ document.querySelector('.button1').addEventListener('click', () => {
     currentTableNum = tableNames.length - 1;
   }
 
-  if (today) {
-    currentParam = `today${tableNames[currentTableNum].charAt(0).toUpperCase()}${tableNames[currentTableNum].slice(1)}`;
-  } else {
-    currentParam = tableNames[currentTableNum];
-  }
-
-  createTable(currentParam);
-  updateMap(currentParam, per);
+  changeTitle();
 });
 
-document.querySelector('.button2').addEventListener('click', () => {
+nextListButton.addEventListener('click', () => {
   searchButton.value = '';
   currentTableNum += 1;
 
@@ -128,28 +149,21 @@ document.querySelector('.button2').addEventListener('click', () => {
     currentTableNum = 0;
   }
 
-  if (today) {
-    currentParam = `today${tableNames[currentTableNum].charAt(0).toUpperCase()}${tableNames[currentTableNum].slice(1)}`;
-  } else {
-    currentParam = tableNames[currentTableNum];
-  }
-
-  createTable(currentParam);
-  updateMap(currentParam, per);
+  changeTitle();
 });
 
 searchButton.addEventListener('keyup', () => {
   search(searchButton.value.toLowerCase());
 });
 
-rangeButton.addEventListener('click', () => {
+listRangeButton.addEventListener('click', () => {
   searchButton.value = '';
   today = !today;
-  document.querySelector('#switch_btn_range_global').click();
-  document.querySelector('#switch_btn_range_map').click();
+  globalRange.click();
+  mapRange.click();
 
   if (today) {
-    currentParam = `today${currentParam.charAt(0).toUpperCase()}${currentParam.slice(1)}`;
+    currentParam = todayListTitle(currentParam);
     createTable(currentParam);
     updateMap(currentParam, per);
   } else {
@@ -159,11 +173,11 @@ rangeButton.addEventListener('click', () => {
   }
 });
 
-perButton.addEventListener('click', () => {
+listPerButton.addEventListener('click', () => {
   searchButton.value = '';
   per = !per;
-  document.querySelector('#switch_btn_per_global').click();
-  document.querySelector('#switch_btn_per_map').click();
+  perGlobal.click();
+  perMap.click();
   createTable(currentParam);
   updateMap(currentParam, per);
 });

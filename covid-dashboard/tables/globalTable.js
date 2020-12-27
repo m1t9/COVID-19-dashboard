@@ -1,79 +1,69 @@
 import getData from '../utils/getData';
 import { resetToGlobal } from '../graph/addGraph';
+import { URLS, getGLobalCountryUrl } from '../data/URLS';
+import { globalTableText } from '../templates/templates';
+import CONSTANTS from '../data/CONSTANTS';
+import {
+  listRangeButton,
+  listPerButton,
+  globalRange,
+  perGlobal,
+  reset,
+  searchButton,
+} from '../utils/buttons';
 
-const urls = [
-  'https://corona.lmao.ninja/v3/covid-19/all',
-  'https://corona.lmao.ninja/v3/covid-19/countries',
-];
-const rangeButton = document.querySelector('#switch_btn_range_global');
-const perButton = document.querySelector('#switch_btn_per_global');
-const reset = document.querySelector('.reset');
-const globalTable = document.querySelector('.global-table-data');
-const globalData = getData(urls[0]);
+const globalTable = document.querySelector(`.${CONSTANTS.GLOBAL_TABLE_DATA}`);
+const globalData = getData(URLS.ALL);
 
 let today = false;
 let per = false;
-let currentIso = 'GLOBAL';
-let currentCountryName = 'GLOBAL';
+let currentIso = CONSTANTS.GLOBAL;
+let currentCountryName = CONSTANTS.GLOBAL;
 
 async function addParams(data, name) {
-  if (per) {
-    const cases = (((await data)[today ? 'todayCases' : 'cases'] * 100000) / (await data).population).toFixed(0);
-    const deaths = (((await data)[today ? 'todayDeaths' : 'deaths'] * 100000) / (await data).population).toFixed(0);
-    const recovered = (((await data)[today ? 'todayRecovered' : 'recovered'] * 100000) / (await data).population).toFixed(0);
-
-    globalTable.innerHTML += `<div><b>${name}</div>`;
-    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} cases: ${cases}</div>`;
-    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} deaths: ${deaths}</div>`;
-    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} recovered: ${recovered}</div>`;
-  } else {
-    globalTable.innerHTML += `<div><b>${name}</div>`;
-    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} cases: ${(await data)[today ? 'todayCases' : 'cases']}</div>`;
-    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} deaths: ${(await data)[today ? 'todayDeaths' : 'deaths']}</div>`;
-    globalTable.innerHTML += `<div>${today ? 'Today' : 'Total'} recovered: ${(await data)[today ? 'todayRecovered' : 'recovered']}</div>`;
-  }
+  globalTableText((await data), name, per, today);
 }
 
-addParams(globalData, 'GLOBAL');
+addParams(globalData, CONSTANTS.GLOBAL);
 
 export default async function updateGlobalTable(iso, countryName) {
   currentIso = iso;
   currentCountryName = countryName;
-  const countryData = getData(`https://disease.sh/v3/covid-19/countries/${iso}?strict=true`);
+  const countryData = getData(getGLobalCountryUrl(iso));
   if (await countryData) {
     globalTable.innerHTML = '';
-    addParams((await countryData), `<div><b>${countryName}</div>`);
+    addParams((await countryData), `<${CONSTANTS.DIV}><b>${countryName}</${CONSTANTS.DIV}>`);
   } else {
-    globalTable.innerHTML = '<div>NO DATA</div>';
+    globalTable.innerHTML = `<${CONSTANTS.DIV}>${CONSTANTS.NO_DATA}</${CONSTANTS.DIV}>`;
   }
 }
 
 function updateWrap() {
-  if (currentIso === 'GLOBAL') {
+  if (currentIso === CONSTANTS.GLOBAL) {
     globalTable.innerHTML = '';
-    addParams(globalData, '<div>GLOBAL</div>');
+    addParams(globalData, `<${CONSTANTS.DIV}>${CONSTANTS.GLOBAL}</${CONSTANTS.DIV}>`);
   } else {
     updateGlobalTable(currentIso, currentCountryName);
   }
 }
 
-rangeButton.addEventListener('click', () => {
+globalRange.addEventListener('click', () => {
   today = !today;
-  document.querySelector('#switch_btn_range').click();
+  listRangeButton.click();
   updateWrap();
 });
 
-perButton.addEventListener('click', () => {
+perGlobal.addEventListener('click', () => {
   per = !per;
-  document.querySelector('#switch_btn_per').click();
+  listPerButton.click();
   updateWrap();
 });
 
 reset.addEventListener('click', () => {
-  document.querySelector('.search').value = '';
-  currentIso = 'GLOBAL';
-  currentCountryName = 'GLOBAL';
+  searchButton.value = '';
+  currentIso = CONSTANTS.GLOBAL;
+  currentCountryName = CONSTANTS.GLOBAL;
   globalTable.innerHTML = '';
-  addParams(globalData, '<div>GLOBAL</div>');
+  addParams(globalData, `<${CONSTANTS.DIV}>${CONSTANTS.GLOBAL}</${CONSTANTS.DIV}>`);
   resetToGlobal();
 });
