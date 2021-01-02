@@ -1,18 +1,13 @@
-function parseJSON(response) {
-  return response.json();
-}
-
-function checkResponse(response) {
-  if (response.status === 200) {
-    return Promise.resolve(response);
-  }
-  return Promise.reject(new Error(response.statusText));
-}
-
 export default async function getData(url) {
   const rez = await fetch(url)
-    .then(checkResponse)
-    .then(parseJSON)
+    .then((response) => {
+      if (response.status === 200) {
+        return response;
+      }
+
+      throw new Error(response.statusText);
+    })
+    .then((response) => response.json())
     .catch(() => null);
 
   return rez;

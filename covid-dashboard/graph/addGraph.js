@@ -15,15 +15,16 @@ let myChart;
 
 async function createGraph(value, name) {
   const ctx = document.getElementById(CONSTANTS.CHART).getContext('2d');
+  const graphData = (await data)[value];
 
   myChart = new Chart(ctx, {
     type: 'bar',
 
     data: {
-      labels: Object.keys((await data)[value]),
+      labels: Object.keys(graphData),
       datasets: [{
         label: name ? `${value} ${name}` : value,
-        data: Object.values((await data)[value]),
+        data: Object.values(graphData),
         backgroundColor: graphColors[currentPos],
         borderColor: graphColors[currentPos],
         borderWidth: 1,

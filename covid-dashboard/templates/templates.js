@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { getColorLegend } from '../utils/colors';
 import CONSTANTS from '../data/CONSTANTS';
 
@@ -6,7 +7,7 @@ export function getMapAttr(attr) {
 }
 
 export function getLegendTitle(title) {
-  return `<${CONSTANTS.DIV} style="text-align: center"><b>${title.toUpperCase()}</${CONSTANTS.DIV}>`;
+  return `<${CONSTANTS.DIV} class="legend_title"><b>${title.toUpperCase()}</${CONSTANTS.DIV}></b>`;
 }
 
 export function getLegendItemRange(gradeFirst, gradeSecond, maxValue) {
@@ -14,35 +15,47 @@ export function getLegendItemRange(gradeFirst, gradeSecond, maxValue) {
 }
 
 export function getTip(name, value) {
-  return `<${CONSTANTS.DIV} class=""><h3>${name}</h5> <p>Data: ${value}</p></${CONSTANTS.DIV}>`;
+  return `<${CONSTANTS.DIV} class=""><h3>${name}</h3> <p>Data: ${value}</p></${CONSTANTS.DIV}>`;
 }
 
 export function getListItem(flag, value, countryName) {
-  return `<img src="${flag}" width="20px" height="10px"> <span id="table_case">${value}</span> ${countryName}`;
+  return `<img src="${flag}" class="flag_pic"> <span id="table_case">${value}</span> ${countryName}`;
 }
 
 export function todayListTitle(name) {
   return `today${name.charAt(0).toUpperCase()}${name.slice(1)}`;
 }
 
-export function globalTableText(data, name, per, today) {
+export function getGlobalTableItem(name) {
+  return `<${CONSTANTS.DIV}><b>${name}</b></${CONSTANTS.DIV}>`;
+}
+
+export function globalTableText(data, name, isAbsolute, today) {
   const globalTable = document.querySelector(`.${CONSTANTS.GLOBAL_TABLE_DATA}`);
+  const range = today ? CONSTANTS.TODAY : CONSTANTS.TOTAL;
+  const tag = CONSTANTS.DIV;
 
-  globalTable.innerHTML += `<${CONSTANTS.DIV}><b>${name}</${CONSTANTS.DIV}>`;
-  if (per) {
-    const cases = ((data[today ? CONSTANTS.TODAY_CASES : CONSTANTS.CASES] * CONSTANTS.PER_100k)
-    / data.population).toFixed(0);
-    const deaths = ((data[today ? CONSTANTS.TODAY_DEATHS : CONSTANTS.DEATHS] * CONSTANTS.PER_100k)
-    / data.population).toFixed(0);
-    const recovered = ((data[today ? CONSTANTS.TODAY_RECOVERED : CONSTANTS.RECOVERED]
-      * CONSTANTS.PER_100k) / data.population).toFixed(0);
+  globalTable.innerHTML += `<${CONSTANTS.DIV}><b>${name}</${CONSTANTS.DIV}></b>`;
+  if (isAbsolute) {
+    const absoluteCoeff = CONSTANTS.PER_100k / data.population;
+    const cases = (data[today ? CONSTANTS.TODAY_CASES : CONSTANTS.CASES] * absoluteCoeff).toFixed(0);
+    const deaths = (data[today ? CONSTANTS.TODAY_DEATHS : CONSTANTS.DEATHS] * absoluteCoeff).toFixed(0);
+    const recovered = (data[today ? CONSTANTS.TODAY_RECOVERED : CONSTANTS.RECOVERED] * absoluteCoeff).toFixed(0);
 
-    globalTable.innerHTML += `<${CONSTANTS.DIV}>${today ? CONSTANTS.TODAY : CONSTANTS.TOTAL} ${CONSTANTS.CASES}: ${cases}</${CONSTANTS.DIV}>`;
-    globalTable.innerHTML += `<${CONSTANTS.DIV}>${today ? CONSTANTS.TODAY : CONSTANTS.TOTAL} ${CONSTANTS.DEATHS}: ${deaths}</${CONSTANTS.DIV}>`;
-    globalTable.innerHTML += `<${CONSTANTS.DIV}>${today ? CONSTANTS.TODAY : CONSTANTS.TOTAL} ${CONSTANTS.RECOVERED}: ${recovered}</${CONSTANTS.DIV}>`;
+    globalTable.innerHTML += `<${tag}>${range} ${CONSTANTS.CASES}: ${cases}</${tag}>`;
+    globalTable.innerHTML += `<${tag}>${range} ${CONSTANTS.DEATHS}: ${deaths}</${tag}>`;
+    globalTable.innerHTML += `<${tag}>${range} ${CONSTANTS.RECOVERED}: ${recovered}</${tag}>`;
   } else {
-    globalTable.innerHTML += `<${CONSTANTS.DIV}>${today ? CONSTANTS.TODAY : CONSTANTS.TOTAL} ${CONSTANTS.CASES}: ${data[today ? CONSTANTS.TODAY_CASES : CONSTANTS.CASES]}</${CONSTANTS.DIV}>`;
-    globalTable.innerHTML += `<${CONSTANTS.DIV}>${today ? CONSTANTS.TODAY : CONSTANTS.TOTAL} ${CONSTANTS.DEATHS}: ${data[today ? CONSTANTS.TODAY_DEATHS : CONSTANTS.DEATHS]}</${CONSTANTS.DIV}>`;
-    globalTable.innerHTML += `<${CONSTANTS.DIV}>${today ? CONSTANTS.TODAY : CONSTANTS.TOTAL} ${CONSTANTS.RECOVERED}: ${data[today ? CONSTANTS.TODAY_RECOVERED : CONSTANTS.RECOVERED]}</${CONSTANTS.DIV}>`;
+    const cases = data[today ? CONSTANTS.TODAY_CASES : CONSTANTS.CASES];
+    const deaths = data[today ? CONSTANTS.TODAY_DEATHS : CONSTANTS.DEATHS];
+    const recovered = data[today ? CONSTANTS.TODAY_RECOVERED : CONSTANTS.RECOVERED];
+
+    globalTable.innerHTML += `<${tag}>${range} ${CONSTANTS.CASES}: ${cases}</${tag}>`;
+    globalTable.innerHTML += `<${tag}>${range} ${CONSTANTS.DEATHS}: ${deaths}</${tag}>`;
+    globalTable.innerHTML += `<${tag}>${range} ${CONSTANTS.RECOVERED}: ${recovered}</${tag}>`;
   }
+}
+
+export function getLastUpdateTime(timeFormat) {
+  return `<b>Last Updated</b> at (YYYY/MM/DD): <br>${timeFormat}</b>`;
 }

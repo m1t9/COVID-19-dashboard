@@ -1,4 +1,5 @@
 import CONSTANTS from '../data/CONSTANTS';
+import { getLastUpdateTime } from '../templates/templates';
 
 const lastUpdateBlock = document.querySelector(`.${CONSTANTS.UPDATE_TIME}`);
 
@@ -11,5 +12,5 @@ export default function updateTime(time) {
     (`0${localTime.getUTCMinutes()}`).slice(-2)}:${
     (`0${localTime.getUTCSeconds()}`).slice(-2)}`;
 
-  lastUpdateBlock.innerHTML = `<b>Last Updated</b> at (YYYY/MM/DD): <br>${timeFormat}`;
+  lastUpdateBlock.innerHTML = getLastUpdateTime(timeFormat);
 }

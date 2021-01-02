@@ -595,6 +595,15 @@ input:checked + .slider .mode_on {
   }
 }
 
+.flag_pic {
+  width: 20px;
+  height: 10px;
+}
+
+.legend_title {
+  text-align: center;
+}
+
 .legend {
   line-height: 18px;
   color: #555;
